@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}收藏夹 - ShanshanWords{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>❤️ 收藏夹</h1>
+    <p>共 {{ words|length }} 个收藏单词</p>
+</div>
+
+{% if words %}
+<div class="word-list">
+    {% for word in words %}
+    <div class="word-card">
+        <div class="word-main">
+            <div class="word-header">
+                <span class="word-text">{{ word.word }}</span>
+                <span class="word-phonetic">{{ word.phonetic }}</span>
+            </div>
+            <div class="word-meta">
+                <span class="word-pos">{{ word.part_of_speech }}</span>
+                <span class="word-category">{{ word.category }}</span>
+            </div>
+            <div class="word-meaning">{{ word.meaning_cn }}</div>
+            {% if word.example_en %}
+            <div class="word-example">
+                <p class="example-en">{{ word.example_en }}</p>
+                <p class="example-cn">{{ word.example_cn }}</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="word-actions">
+            <a href="/toggle_favorite/{{ word.id }}?next={{ request.url|urlencode }}" class="action-btn active">❤️</a>
+            <a href="/toggle_hard/{{ word.id }}?next={{ request.url|urlencode }}" class="action-btn {% if word.is_hard %}active{% endif %}">
+                {{ '⭐' if word.is_hard else '☆' }}
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>还没有收藏任何单词</p>
+    <p class="empty-hint">在单词列表中点击 ❤️ 按钮来添加收藏</p>
+    <a href="/library" class="btn btn-primary">去词库选择</a>
+</div>
+{% endif %}
+
+<div class="back-link">
+    <a href="/library" class="btn btn-ghost">← 返回词库选择</a>
+</div>
+{% endblock %}

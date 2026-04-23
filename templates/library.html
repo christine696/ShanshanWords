@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}词库选择 - ShanshanWords{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>选择词库</h1>
+    <p>选择一个词库开始学习</p>
+</div>
+
+<div class="library-grid">
+    <div class="library-card">
+        <div class="library-icon">📚</div>
+        <h2>IELTS 词汇</h2>
+        <p class="library-desc">雅思考试核心词汇，助你冲刺目标分数</p>
+        <div class="library-count">5 个单词</div>
+        <div class="library-actions">
+            <a href="/words?category=IELTS" class="btn btn-primary">浏览词库</a>
+            <a href="/plan?category=IELTS" class="btn btn-outline">按计划学习</a>
+        </div>
+    </div>
+
+    <div class="library-card">
+        <div class="library-icon">🎓</div>
+        <h2>GRE 词汇</h2>
+        <p class="library-desc">GRE 考试高频词汇，攻克学术英语</p>
+        <div class="library-count">31 个单词</div>
+        <div class="library-actions">
+            <a href="/words?category=GRE" class="btn btn-primary">浏览词库</a>
+            <a href="/plan?category=GRE" class="btn btn-outline">按计划学习</a>
+        </div>
+    </div>
+</div>
+
+<div class="tips-box">
+    <h3>💡 学习提示</h3>
+    <ul>
+        <li>点击收藏按钮将单词添加到收藏夹</li>
+        <li>点击难词按钮标记记忆困难的单词</li>
+        <li>使用搜索功能快速找到目标单词</li>
+        <li>使用「珊珊的方法」按计划循环学习</li>
+    </ul>
+</div>
+{% endblock %}

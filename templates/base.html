@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}珊珊单词 · ShanshanWords{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">珊珊单词 · ShanshanWords</a>
+            <ul class="nav-links">
+                <li><a href="/">首页</a></li>
+                <li><a href="/library">词库</a></li>
+                <li><a href="/method">珊珊的方法</a></li>
+                <li><a href="/favorites">收藏</a></li>
+                <li><a href="/hard_words">难词本</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 ShanshanWords · 让背单词更高效</p>
+    </footer>
+</body>
+</html>

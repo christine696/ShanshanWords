@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}珊珊单词 · ShanshanWords{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero">
+    <div class="hero-icon">📖</div>
+    <h1>珊珊单词</h1>
+    <p class="hero-subtitle">ShanshanWords · A smarter way to remember IELTS and GRE vocabulary</p>
+</div>
+
+<!-- Two Learning Modes -->
+<div class="mode-section">
+    <h2 class="section-title">选择学习模式</h2>
+    <div class="mode-cards">
+        <div class="mode-card">
+            <div class="mode-icon">📚</div>
+            <h3>普通模式</h3>
+            <p>自由浏览词库，搜索单词，标记收藏和难词</p>
+            <ul class="mode-features">
+                <li>按词库浏览所有单词</li>
+                <li>搜索单词或中文释义</li>
+                <li>收藏重要单词</li>
+                <li>标记记忆困难的单词</li>
+            </ul>
+            <a href="/library" class="btn btn-primary">开始浏览</a>
+        </div>
+
+        <div class="mode-card">
+            <div class="mode-icon">🔄</div>
+            <h3>珊珊的方法</h3>
+            <p>科学的循环记忆法，按计划每日学习</p>
+            <ul class="mode-features">
+                <li>将词库分成若干天循环学习</li>
+                <li>每天自动生成当日词单</li>
+                <li>复习之前标记的难词</li>
+                <li>提高记忆效率</li>
+            </ul>
+            <a href="/method" class="btn btn-purple">开始计划</a>
+        </div>
+    </div>
+</div>
+
+<!-- Philosophy Section -->
+<div class="philosophy-section">
+    <h2 class="section-title">核心理念</h2>
+    <div class="philosophy-cards">
+        <div class="philosophy-card">
+            <div class="philosophy-icon">🔄</div>
+            <h3>循环记忆</h3>
+            <p>基于艾宾浩斯遗忘曲线，科学安排复习时机，让记忆更持久</p>
+        </div>
+        <div class="philosophy-card">
+            <div class="philosophy-icon">⭐</div>
+            <h3>难词标记</h3>
+            <p>一键标记记忆困难的单词，重点攻克薄弱环节</p>
+        </div>
+        <div class="philosophy-card">
+            <div class="philosophy-icon">❤️</div>
+            <h3>重点复习</h3>
+            <p>收藏重要单词，方便随时回顾，强化重点词汇</p>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Stats -->
+<div class="stats-bar">
+    <div class="stat">
+        <span class="stat-num">IELTS</span>
+        <span class="stat-label">雅思核心词汇</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+        <span class="stat-num">GRE</span>
+        <span class="stat-label">高频词汇</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+        <span class="stat-num">2</span>
+        <span class="stat-label">大词库</span>
+    </div>
+</div>
+{% endblock %}

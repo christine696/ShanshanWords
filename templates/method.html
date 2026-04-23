@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}珊珊的方法 - ShanshanWords{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>珊珊的方法</h1>
+    <p>科学的循环记忆法，让背单词更高效</p>
+</div>
+
+<!-- Method Intro -->
+<div class="method-intro">
+    <h2>🔄 如何运作</h2>
+    <p>珊珊的方法基于艾宾浩斯遗忘曲线原理，通过将词库分成若干天份，每天学习一部分，同时复习之前标记的难词，帮助你更有效地记忆单词。</p>
+
+    <div class="method-steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text">
+                <strong>设置循环天数</strong>
+                <span>将词库分成 N 等份，如 4 天完成一轮</span>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text">
+                <strong>选择当前进度</strong>
+                <span>告诉系统今天是第几天</span>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text">
+                <strong>每日学习</strong>
+                <span>学习当日词单，同时复习难词</span>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-text">
+                <strong>循环往复</strong>
+                <span>完成一轮后重新开始，持续巩固</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Start Form -->
+<div class="method-form">
+    <h2>🚀 开始学习</h2>
+    <form method="post" action="/method">
+        <div class="form-row">
+            <div class="form-group">
+                <label>选择词库</label>
+                <select name="category" class="form-control">
+                    <option value="IELTS">IELTS 雅思词汇</option>
+                    <option value="GRE">GRE 词汇</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>循环天数</label>
+                <select name="cycle_days" class="form-control">
+                    <option value="4">4 天一轮</option>
+                    <option value="5">5 天一轮</option>
+                    <option value="7">7 天一轮</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>今天是第几天</label>
+                <input type="number" name="day_number" value="1" min="1" class="form-control">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-purple btn-block">生成本日词单</button>
+    </form>
+</div>
+
+<!-- Tips -->
+<div class="tips-box">
+    <h3>💡 学习建议</h3>
+    <ul>
+        <li>每天学习新词的同时，记得复习之前标记的难词</li>
+        <li>遇到记忆困难的单词，点击「难词」按钮标记</li>
+        <li>坚持是关键，每天坚持学习效果最好</li>
+        <li>可以在收藏夹保存重要单词方便回顾</li>
+    </ul>
+</div>
+{% endblock %}

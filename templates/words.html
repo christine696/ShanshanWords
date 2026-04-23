@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category }} 词汇 - ShanshanWords{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ category }} 词汇列表</h1>
+    <p>共 {{ words|length }} 个单词</p>
+</div>
+
+<!-- Search Bar -->
+<div class="search-box">
+    <form method="get" action="/words" class="search-form">
+        <input type="hidden" name="category" value="{{ category }}">
+        <input type="text" name="q" placeholder="搜索单词或中文释义..." value="{{ q }}" class="search-input">
+        <button type="submit" class="btn btn-primary">搜索</button>
+        {% if q %}
+        <a href="/words?category={{ category }}" class="btn btn-ghost">清除</a>
+        {% endif %}
+    </form>
+</div>
+
+<!-- Category Tabs -->
+<div class="tabs">
+    <a href="/words?category=IELTS" class="tab {% if category == 'IELTS' %}active{% endif %}">IELTS</a>
+    <a href="/words?category=GRE" class="tab {% if category == 'GRE' %}active{% endif %}">GRE</a>
+</div>
+
+<!-- Word List -->
+{% if words %}
+<div class="word-list">
+    {% for word in words %}
+    <div class="word-card">
+        <div class="word-main">
+            <div class="word-header">
+                <span class="word-text">{{ word.word }}</span>
+                <span class="word-phonetic">{{ word.phonetic }}</span>
+            </div>
+            <div class="word-meta">
+                <span class="word-pos">{{ word.part_of_speech }}</span>
+                <span class="word-difficulty difficulty-{{ word.difficulty }}">{{ ['', '基础', '中等', '困难'][word.difficulty] }}</span>
+            </div>
+            <div class="word-meaning">{{ word.meaning_cn }}</div>
+            {% if word.example_en %}
+            <div class="word-example">
+                <p class="example-en">{{ word.example_en }}</p>
+                <p class="example-cn">{{ word.example_cn }}</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="word-actions">
+            <a href="/toggle_favorite/{{ word.id }}?next={{ request.url|urlencode }}"
+               class="action-btn {% if word.is_favorite %}active{% endif %}" title="收藏">
+                {{ '❤️' if word.is_favorite else '🤍' }}
+            </a>
+            <a href="/toggle_hard/{{ word.id }}?next={{ request.url|urlencode }}"
+               class="action-btn {% if word.is_hard %}active{% endif %}" title="标记难词">
+                {{ '⭐' if word.is_hard else '☆' }}
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>没有找到匹配的单词</p>
+    <a href="/words?category={{ category }}" class="btn btn-outline">查看全部</a>
+</div>
+{% endif %}
+
+<div class="back-link">
+    <a href="/library" class="btn btn-ghost">← 返回词库选择</a>
+</div>
+{% endblock %}

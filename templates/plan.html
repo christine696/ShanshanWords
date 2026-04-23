@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}今日词单 - ShanshanWords{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📅 今日词单</h1>
+    <p>{{ category }} · 第 {{ day_number }} 天 / 共 {{ cycle_days }} 天</p>
+</div>
+
+<!-- Plan Info -->
+<div class="plan-info">
+    <div class="info-item">
+        <span class="info-label">总词汇量</span>
+        <span class="info-value">{{ total_words }}</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">每日词数</span>
+        <span class="info-value">{{ per_day }}</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">当前进度</span>
+        <span class="info-value">{{ start_index }}-{{ end_index }}</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">难词数</span>
+        <span class="info-value">{{ hard_words|length }}</span>
+    </div>
+</div>
+
+<div class="plan-actions">
+    <a href="/method" class="btn btn-outline">修改计划</a>
+    <a href="/library" class="btn btn-ghost">切换词库</a>
+</div>
+
+<!-- Hard Words Review -->
+{% if hard_words %}
+<div class="section">
+    <h2 class="section-title">⭐ 需要复习的难词 ({{ hard_words|length }})</h2>
+    <div class="word-list">
+        {% for word in hard_words %}
+        <div class="word-card hard">
+            <div class="word-main">
+                <div class="word-header">
+                    <span class="word-text">{{ word.word }}</span>
+                    <span class="word-phonetic">{{ word.phonetic }}</span>
+                </div>
+                <div class="word-meta">
+                    <span class="word-pos">{{ word.part_of_speech }}</span>
+                    <span class="word-difficulty difficulty-{{ word.difficulty }}">{{ ['', '基础', '中等', '困难'][word.difficulty] }}</span>
+                </div>
+                <div class="word-meaning">{{ word.meaning_cn }}</div>
+                {% if word.example_en %}
+                <div class="word-example">
+                    <p class="example-en">{{ word.example_en }}</p>
+                    <p class="example-cn">{{ word.example_cn }}</p>
+                </div>
+                {% endif %}
+            </div>
+            <div class="word-actions">
+                <a href="/toggle_favorite/{{ word.id }}?next={{ request.url|urlencode }}" class="action-btn {% if word.is_favorite %}active{% endif %}">
+                    {{ '❤️' if word.is_favorite else '🤍' }}
+                </a>
+                <a href="/toggle_hard/{{ word.id }}?next={{ request.url|urlencode }}" class="action-btn active">
+                    ⭐
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Today's New Words -->
+<div class="section">
+    <h2 class="section-title">📖 今日新词 ({{ words|length }})</h2>
+    {% if words %}
+    <div class="word-list">
+        {% for word in words %}
+        <div class="word-card">
+            <div class="word-main">
+                <div class="word-header">
+                    <span class="word-text">{{ word.word }}</span>
+                    <span class="word-phonetic">{{ word.phonetic }}</span>
+                </div>
+                <div class="word-meta">
+                    <span class="word-pos">{{ word.part_of_speech }}</span>
+                    <span class="word-difficulty difficulty-{{ word.difficulty }}">{{ ['', '基础', '中等', '困难'][word.difficulty] }}</span>
+                </div>
+                <div class="word-meaning">{{ word.meaning_cn }}</div>
+                {% if word.example_en %}
+                <div class="word-example">
+                    <p class="example-en">{{ word.example_en }}</p>
+                    <p class="example-cn">{{ word.example_cn }}</p>
+                </div>
+                {% endif %}
+            </div>
+            <div class="word-actions">
+                <a href="/toggle_favorite/{{ word.id }}?next={{ request.url|urlencode }}" class="action-btn {% if word.is_favorite %}active{% endif %}">
+                    {{ '❤️' if word.is_favorite else '🤍' }}
+                </a>
+                <a href="/toggle_hard/{{ word.id }}?next={{ request.url|urlencode }}" class="action-btn {% if word.is_hard %}active{% endif %}">
+                    {{ '⭐' if word.is_hard else '☆' }}
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>本轮学习已完成！</p>
+        <a href="/method" class="btn btn-purple">开始新一轮</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
