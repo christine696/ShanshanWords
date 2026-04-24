@@ -1,62 +1,44 @@
 {% extends "base.html" %}
-
-{% block title %}{{ category }} 词汇 - ShanshanWords{% endblock %}
-
+{% block title %}{{ cats[cat].label }} - 珊珊单词{% endblock %}
 {% block content %}
 <div class="page-header">
-    <h1>{{ category }} 词汇列表</h1>
+    <h1>{{ cats[cat].icon }} {{ cats[cat].label }}</h1>
     <p>共 {{ words|length }} 个单词</p>
 </div>
 
-<!-- Search Bar -->
-<div class="search-box">
-    <form method="get" action="/words" class="search-form">
-        <input type="hidden" name="category" value="{{ category }}">
-        <input type="text" name="q" placeholder="搜索单词或中文释义..." value="{{ q }}" class="search-input">
-        <button type="submit" class="btn btn-primary">搜索</button>
-        {% if q %}
-        <a href="/words?category={{ category }}" class="btn btn-ghost">清除</a>
-        {% endif %}
-    </form>
+<div class="words-topbar">
+    <div class="topbar-left">
+        <a href="/library/{{ cat }}" class="btn btn-ghost btn-sm">← 返回</a>
+    </div>
+    <div class="topbar-center">
+        <input type="text" class="search-mini" placeholder="搜索..." value="{{ q }}" onkeydown="if(event.key==='Enter')location.href='/words?category={{ cat }}&section={{ section }}&subcategory={{ sub }}&q='+this.value">
+    </div>
+    <div class="topbar-right">
+        <button class="btn-tgl" id="tgl-en" onclick="toggleEn()">👁 遮挡英文</button>
+        <button class="btn-tgl" id="tgl-cn" onclick="toggleCn()">👁 遮挡中文</button>
+    </div>
 </div>
 
-<!-- Category Tabs -->
-<div class="tabs">
-    <a href="/words?category=IELTS" class="tab {% if category == 'IELTS' %}active{% endif %}">IELTS</a>
-    <a href="/words?category=GRE" class="tab {% if category == 'GRE' %}active{% endif %}">GRE</a>
+{% if subs %}
+<div class="sub-tabs">
+    <a href="/words?category={{ cat }}{% if section %}&section={{ section }}{% endif %}" class="sub-tab {% if not sub %}active{% endif %}">全部</a>
+    {% for s in subs %}
+    <a href="/words?category={{ cat }}{% if section %}&section={{ section }}{% endif %}&subcategory={{ s }}" class="sub-tab {% if sub==s %}active{% endif %}">{{ s }}</a>
+    {% endfor %}
 </div>
+{% endif %}
 
-<!-- Word List -->
 {% if words %}
-<div class="word-list">
+<div class="words-list" id="words-list">
     {% for word in words %}
-    <div class="word-card">
-        <div class="word-main">
-            <div class="word-header">
-                <span class="word-text">{{ word.word }}</span>
-                <span class="word-phonetic">{{ word.phonetic }}</span>
-            </div>
-            <div class="word-meta">
-                <span class="word-pos">{{ word.part_of_speech }}</span>
-                <span class="word-difficulty difficulty-{{ word.difficulty }}">{{ ['', '基础', '中等', '困难'][word.difficulty] }}</span>
-            </div>
-            <div class="word-meaning">{{ word.meaning_cn }}</div>
-            {% if word.example_en %}
-            <div class="word-example">
-                <p class="example-en">{{ word.example_en }}</p>
-                <p class="example-cn">{{ word.example_cn }}</p>
-            </div>
-            {% endif %}
-        </div>
-        <div class="word-actions">
-            <a href="/toggle_favorite/{{ word.id }}?next={{ request.url|urlencode }}"
-               class="action-btn {% if word.is_favorite %}active{% endif %}" title="收藏">
-                {{ '❤️' if word.is_favorite else '🤍' }}
-            </a>
-            <a href="/toggle_hard/{{ word.id }}?next={{ request.url|urlencode }}"
-               class="action-btn {% if word.is_hard %}active{% endif %}" title="标记难词">
-                {{ '⭐' if word.is_hard else '☆' }}
-            </a>
+    <div class="word-row">
+        <div class="word-en">{{ word.word }}</div>
+        <div class="word-ph">{{ word.phonetic }}</div>
+        <div class="word-cn">{{ word.meaning_cn }}</div>
+        <div class="word-pos">{{ word.part_of_speech }}</div>
+        <div class="word-btns">
+            <a href="/toggle_favorite/{{ word.id }}?next={{ request.url|urlencode }}" class="fav-btn">{{ '❤️' if word.is_favorite else '🤍' }}</a>
+            <a href="/toggle_hard/{{ word.id }}?next={{ request.url|urlencode }}" class="hard-btn">{{ '⭐' if word.is_hard else '☆' }}</a>
         </div>
     </div>
     {% endfor %}
@@ -64,11 +46,21 @@
 {% else %}
 <div class="empty-state">
     <p>没有找到匹配的单词</p>
-    <a href="/words?category={{ category }}" class="btn btn-outline">查看全部</a>
+    <a href="/words?category={{ cat }}" class="btn btn-outline">查看全部</a>
 </div>
 {% endif %}
 
-<div class="back-link">
-    <a href="/library" class="btn btn-ghost">← 返回词库选择</a>
-</div>
+<script>
+var enHidden = false, cnHidden = false;
+function toggleEn() {
+    enHidden = !enHidden;
+    document.getElementById('tgl-en').classList.toggle('active', enHidden);
+    document.querySelectorAll('.word-en').forEach(function(el){ el.style.visibility=enHidden?'hidden':'visible'; });
+}
+function toggleCn() {
+    cnHidden = !cnHidden;
+    document.getElementById('tgl-cn').classList.toggle('active', cnHidden);
+    document.querySelectorAll('.word-cn').forEach(function(el){ el.style.visibility=cnHidden?'hidden':'visible'; });
+}
+</script>
 {% endblock %}

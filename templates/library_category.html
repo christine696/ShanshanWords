@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}{{ categories[category].label }} - 珊珊单词{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ categories[category].icon }} {{ categories[category].label }}</h1>
+    <p>{{ categories[category].desc }}</p>
+</div>
+
+<div class="tabs">
+    {% for cat_key, cat in categories.items() %}
+    <a href="/library/{{ cat_key }}" class="tab {% if category == cat_key %}active{% endif %}">{{ cat.icon }} {{ cat.label }}</a>
+    {% endfor %}
+</div>
+
+{% if category == 'GRE' %}
+<div class="section-block">
+    <div class="section-header">
+        <h2>全部 GRE 词汇</h2>
+        <span class="section-count">{{ cat_counts.get('GRE', 0) }} 个单词</span>
+    </div>
+    <div class="section-action">
+        <a href="/words?category=GRE" class="btn btn-primary btn-lg">开始学习 →</a>
+    </div>
+</div>
+
+{% elif category == 'IELTS_BOOK' %}
+<div class="section-block">
+    <div class="section-header">
+        <h2>Word List 词汇表</h2>
+        <span class="section-count">核心词汇速览</span>
+    </div>
+    <div class="chapter-grid">
+        <a href="/words?category=IELTS_BOOK&subcategory=Word_List" class="chapter-card chapter-card-main">
+            <div class="chapter-icon">📋</div>
+            <div class="chapter-info">
+                <h3>Word List</h3>
+                <p>词汇表 · 核心高频词</p>
+            </div>
+            <div class="chapter-arrow">→</div>
+        </a>
+    </div>
+</div>
+
+<div class="section-block">
+    <div class="section-header">
+        <h2>九大主题章节</h2>
+    </div>
+    <div class="chapter-grid">
+        {% for chapter_key, chapter_name in bible_chapters.items() %}
+        {% if chapter_key != 'Word_List' %}
+        <a href="/words?category=IELTS_BOOK&subcategory={{ chapter_key }}" class="chapter-card">
+            <div class="chapter-icon">📚</div>
+            <div class="chapter-info">
+                <h3>{{ chapter_name }}</h3>
+            </div>
+            <div class="chapter-arrow">→</div>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% elif category == 'IELTS_SCENE' %}
+<div class="section-block">
+    <div class="section-header">
+        <h2>四大篇章</h2>
+        <span class="section-count">听说读写全覆盖</span>
+    </div>
+    <div class="chapter-grid">
+        {% for sec_name in scene_sections %}
+        <a href="/section/IELTS_SCENE/{{ sec_name }}" class="chapter-card chapter-card-section">
+            <div class="chapter-icon">
+                {% if '听力' in sec_name %}🎧{% elif '阅读' in sec_name %}📖{% elif '写作' in sec_name %}✏️{% else %}🗣️{% endif %}
+            </div>
+            <div class="chapter-info">
+                <h3>{{ sec_name }}</h3>
+                <p>
+                    {% if '听力' in sec_name %}租房、旅行、选课等场景词汇{% elif '阅读' in sec_name %}教育、科技、社会等核心词汇{% elif '写作' in sec_name %}教育、科技、社会等写作素材{% else %}日常交流核心词汇{% endif %}
+                </p>
+            </div>
+            <div class="chapter-arrow">→</div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="back-link">
+    <a href="/library" class="btn btn-ghost">← 返回词库选择</a>
+</div>
+{% endblock %}

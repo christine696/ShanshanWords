@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}雅思场景词汇 - 珊珊单词{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>🎧 雅思场景词汇</h1>
+    <p>听说读写四大篇章，共 {{ count }} 个单词</p>
+</div>
+
+<div class="tabs">
+    <a href="/library/GRE" class="tab">🎓 GRE核心词汇</a>
+    <a href="/library/IELTS_BOOK" class="tab">📖 雅思词汇真经</a>
+    <a href="/library/IELTS_SCENE" class="tab active">🎧 雅思场景词汇</a>
+</div>
+
+<div class="section-block">
+    <div class="section-header">
+        <h2>四大篇章</h2>
+        <span class="section-count">{{ count }} 词</span>
+    </div>
+    <div class="chapter-grid">
+        {% for sec in sections %}
+        <a href="/section/IELTS_SCENE/{{ sec }}" class="chapter-card chapter-card-section">
+            <div class="chapter-icon">
+                {% if '听力' in sec %}🎧{% elif '阅读' in sec %}📖{% elif '写作' in sec %}✏️{% else %}🗣️{% endif %}
+            </div>
+            <div class="chapter-info">
+                <h3>{{ sec }}</h3>
+                <p>
+                    {% if '听力' in sec %}租房、旅行、选课等场景词汇
+                    {% elif '阅读' in sec %}教育、科技、社会等核心词汇
+                    {% elif '写作' in sec %}教育、科技、社会等写作素材
+                    {% else %}日常交流核心词汇{% endif %}
+                </p>
+            </div>
+            <div class="chapter-arrow">→</div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="back-link"><a href="/library" class="btn btn-ghost">← 返回词库</a></div>
+{% endblock %}

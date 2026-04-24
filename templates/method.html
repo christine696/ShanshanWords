@@ -1,87 +1,99 @@
 {% extends "base.html" %}
 
-{% block title %}珊珊的方法 - ShanshanWords{% endblock %}
+{% block title %}珊珊的方法 - 珊珊单词{% endblock %}
 
 {% block content %}
 <div class="page-header">
-    <h1>珊珊的方法</h1>
-    <p>科学的循环记忆法，让背单词更高效</p>
+    <h1>🔄 珊珊的方法</h1>
+    <p>循环记忆法，让每个单词被看见五遍、六遍</p>
 </div>
 
-<!-- Method Intro -->
-<div class="method-intro">
-    <h2>🔄 如何运作</h2>
-    <p>珊珊的方法基于艾宾浩斯遗忘曲线原理，通过将词库分成若干天份，每天学习一部分，同时复习之前标记的难词，帮助你更有效地记忆单词。</p>
-
-    <div class="method-steps">
-        <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-text">
-                <strong>设置循环天数</strong>
-                <span>将词库分成 N 等份，如 4 天完成一轮</span>
-            </div>
+<div class="philosophy-block">
+    <h2>🧠 珊珊的记忆理念</h2>
+    <div class="philosophy-grid">
+        <div class="phil-card">
+            <div class="phil-num">01</div>
+            <h3>不求一遍背熟</h3>
+            <p>记忆是一个重复的过程。第一遍看不懂很正常，第五遍、第六遍自然会记住。</p>
         </div>
-        <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-text">
-                <strong>选择当前进度</strong>
-                <span>告诉系统今天是第几天</span>
-            </div>
+        <div class="phil-card">
+            <div class="phil-num">02</div>
+            <h3>循环比死记更有效</h3>
+            <p>把词库分成若干天，每天按计划看一轮。多次眼熟，胜过一次性硬背。</p>
         </div>
-        <div class="step">
-            <div class="step-num">3</div>
-            <div class="step-text">
-                <strong>每日学习</strong>
-                <span>学习当日词单，同时复习难词</span>
-            </div>
+        <div class="phil-card">
+            <div class="phil-num">03</div>
+            <h3>难词重点标记</h3>
+            <p>遇到记不住的单词，标记为「难词」，珊珊的方法每天都会优先复习它们。</p>
         </div>
-        <div class="step">
-            <div class="step-num">4</div>
-            <div class="step-text">
-                <strong>循环往复</strong>
-                <span>完成一轮后重新开始，持续巩固</span>
-            </div>
+        <div class="phil-card">
+            <div class="phil-num">04</div>
+            <h3>坚持就是胜利</h3>
+            <p>每天坚持，比一口气学很多更重要。循环多轮，单词自然扎根在记忆里。</p>
         </div>
     </div>
 </div>
 
-<!-- Start Form -->
+<div class="why-block">
+    <h2>💡 为什么循环比死记更有效？</h2>
+    <p>人的遗忘速度遵循艾宾浩斯曲线。刚背过的单词，24小时后就会忘记大部分。但如果每天复习一次，每次间隔都在加深记忆。珊珊的方法正是基于这个原理设计的。</p>
+</div>
+
 <div class="method-form">
-    <h2>🚀 开始学习</h2>
+    <h2>🚀 开始今日计划</h2>
     <form method="post" action="/method">
+        <div class="form-group">
+            <label>选择词库</label>
+            <select name="category" class="form-control">
+                {% for cat_key, cat in cats.items() %}
+                <option value="{{ cat_key }}">{{ cat.icon }} {{ cat.label }} ({{ counts.get(cat_key, 0) }} 个)</option>
+                {% endfor %}
+            </select>
+        </div>
+
         <div class="form-row">
             <div class="form-group">
-                <label>选择词库</label>
-                <select name="category" class="form-control">
-                    <option value="IELTS">IELTS 雅思词汇</option>
-                    <option value="GRE">GRE 词汇</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>循环天数</label>
-                <select name="cycle_days" class="form-control">
-                    <option value="4">4 天一轮</option>
-                    <option value="5">5 天一轮</option>
-                    <option value="7">7 天一轮</option>
+                <label>循环天数（1-30天）</label>
+                <select name="cycle_days" class="form-control" id="cycle-days">
+                    {% for d in range(1, 31) %}
+                    <option value="{{ d }}" {% if d == 5 %}selected{% endif %}>{{ d }} 天</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="form-group">
                 <label>今天是第几天</label>
-                <input type="number" name="day_number" value="1" min="1" class="form-control">
+                <select name="day_number" class="form-control" id="day-num">
+                    {% for d in range(1, 31) %}
+                    <option value="{{ d }}">第 {{ d }} 天</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
-        <button type="submit" class="btn btn-purple btn-block">生成本日词单</button>
+
+        <div class="method-preview" id="preview">
+            <span>选择词库后，这里会显示预估每日学习量</span>
+        </div>
+
+        <button type="submit" class="btn btn-purple btn-block">生成本日词单 →</button>
     </form>
 </div>
 
-<!-- Tips -->
-<div class="tips-box">
-    <h3>💡 学习建议</h3>
-    <ul>
-        <li>每天学习新词的同时，记得复习之前标记的难词</li>
-        <li>遇到记忆困难的单词，点击「难词」按钮标记</li>
-        <li>坚持是关键，每天坚持学习效果最好</li>
-        <li>可以在收藏夹保存重要单词方便回顾</li>
-    </ul>
-</div>
+<script>
+const catCounts = {{ counts | tojson }};
+const catLabels = {{ cats | tojson }};
+const cycleSelect = document.getElementById('cycle-days');
+const preview = document.getElementById('preview');
+
+function updatePreview() {
+    const cat = document.querySelector('select[name="category"]').value;
+    const days = parseInt(cycleSelect.value);
+    const total = catCounts[cat] || 0;
+    const perDay = Math.ceil(total / days) || 0;
+    const label = catLabels[cat] ? catLabels[cat].label : cat;
+    preview.innerHTML = '<strong>' + label + '</strong> 共 <strong>' + total + '</strong> 词，分 <strong>' + days + '</strong> 天循环，每日约 <strong>' + perDay + '</strong> 词';
+}
+updatePreview();
+document.querySelector('select[name="category"]').addEventListener('change', updatePreview);
+cycleSelect.addEventListener('change', updatePreview);
+</script>
 {% endblock %}

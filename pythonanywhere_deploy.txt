@@ -1,0 +1,138 @@
+============================================================
+  PythonAnywhere 部署说明 - ShanshanWords
+============================================================
+
+一、项目在本地需上传的内容（部署包）
+------------------------------------------------------
+保留：
+  app.py                  - Flask 入口（实例名 app，变量名 app）
+  init_db.py              - 数据库初始化脚本
+  requirements.txt        - 依赖清单
+  templates/              - HTML 模板目录
+  static/                 - CSS/JS 等静态文件
+  data/words_master.csv   - 词汇数据（不含 words.db）
+  words.db                - SQLite 数据库（含用户收藏/难词进度）
+
+排除（不要上传）：
+  venv/                   - PythonAnywhere 使用自己的虚拟环境
+  __pycache__/            - 缓存
+  .git/                   - 版本管理
+  *.pyc                   - 编译文件
+  import_*.py             - PDF 导入脚本（本地用）
+  merge_all.py            - 本地合并工具
+  init_db.py              - （可保留但 PythonAnywhere 已初始化过数据库）
+  *.json / *.txt          - 调试输出文件
+  words.db                - （如已在服务器初始化则可不传）
+
+二、在 PythonAnywhere 上的目录结构
+------------------------------------------------------
+建议路径：
+  /home/<your-username>/ShanshanWords/
+
+完整目录：
+  /home/<your-username>/ShanshanWords/
+      app.py
+      init_db.py
+      requirements.txt
+      words.db
+      templates/
+          base.html
+          index.html
+          library.html
+          words.html
+          ...（共 13 个模板）
+      static/
+          style.css
+          （如其他静态文件）
+      data/
+          words_master.csv
+          words.csv
+
+三、WSGI 文件配置
+------------------------------------------------------
+路径：/var/www/<your-username>_wsgi.py
+
+内容：
+
+import sys
+import os
+
+# 项目根目录加入 Python 路径
+path = '/home/<your-username>/ShanshanWords'
+if path not in sys.path:
+    sys.path.insert(0, path)
+
+# 切换到项目目录
+os.chdir(path)
+
+# 导入 Flask 应用（注意变量名必须是 app）
+from app import app as application
+
+# PythonAnywhere 要求变量名必须是 application
+# 注意：是 application，不是 app
+
+四、静态文件配置（Web 标签页）
+------------------------------------------------------
+在 PythonAnywhere 的 "Web" 页面中设置：
+
+  URL:           /static/
+  Directory:     /home/<your-username>/ShanshanWords/static
+
+这样访问 /static/style.css 会直接映射到 static/style.css
+
+五、安装依赖
+------------------------------------------------------
+在 PythonAnywhere Bash 中：
+
+  pip install -r requirements.txt
+
+或手动：
+
+  pip install Flask==3.0.3 gunicorn==23.0.0
+
+六、数据库初始化（如需要）
+------------------------------------------------------
+PythonAnywhere Bash 中：
+
+  cd ~/ShanshanWords
+  python init_db.py
+
+注：如果 words.db 已通过 FTP 上传则可跳过此步。
+
+七、部署步骤
+------------------------------------------------------
+1. 将项目文件（排除 venv/ 等）通过 PythonAnywhere Files 上传
+   或使用 scp / FTP 上传压缩包后解压
+
+2. 在 Consoles 中安装依赖：
+   pip install -r requirements.txt
+
+3. 在 Web 页面配置：
+   - WSGI file: /var/www/<your-username>_wsgi.py（按上面第三步填写）
+   - Static files: /static/ -> /home/<your-username>/ShanshanWords/static
+
+4. 点击 "Reload <your-username>.pythonanywhere.com"
+
+5. 访问：https://<your-username>.pythonanywhere.com/
+
+八、注意事项
+------------------------------------------------------
+- 本项目使用 SQLite（words.db），PythonAnywhere 免费版支持 SQLite 读写
+- 数据库文件路径需为相对路径（已配置为 ./words.db，无需修改）
+- 如需重置数据库，在 Bash 中运行：python init_db.py
+- 词库数据在 data/words_master.csv，可上传后重新执行 init_db.py 导入
+
+九、Flask 应用信息（已确认）
+------------------------------------------------------
+  入口文件:     app.py
+  实例名:       app（即 Flask 实例对象）
+  数据库:       SQLite，路径 ./words.db（相对路径）
+  模板目录:     templates/
+  静态目录:     static/
+  WSGI 变量:    application（PythonAnywhere 要求）
+  无 Windows 硬编码，无 127.0.0.1 硬编码
+
+============================================================
+  生成时间: 2026-04-24
+  项目: ShanshanWords · 珊珊单词
+============================================================

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ section }} - 珊珊单词{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>
+        {% if '听力' in section %}🎧{% elif '阅读' in section %}📖{% elif '写作' in section %}✏️{% else %}🗣️{% endif %}
+        {{ section }}
+    </h1>
+    <p>共 {{ word_count }} 个单词</p>
+</div>
+
+<div class="section-block">
+    <a href="/words?category={{ cat }}&section={{ section }}" class="chapter-card chapter-card-main" style="margin-bottom:16px;">
+        <div class="chapter-icon">📋</div>
+        <div class="chapter-info"><h3>查看全部 {{ word_count }} 词</h3></div>
+        <div class="chapter-arrow">→</div>
+    </a>
+</div>
+
+{% if subs %}
+<div class="section-block">
+    <div class="section-header"><h2>场景分类</h2></div>
+    <div class="chapter-grid">
+        {% for s in subs %}
+        <a href="/words?category={{ cat }}&section={{ section }}&subcategory={{ s }}" class="chapter-card">
+            <div class="chapter-icon">🏷️</div>
+            <div class="chapter-info"><h3>{{ s }}</h3></div>
+            <div class="chapter-arrow">→</div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="back-link">
+    <a href="/library/{{ cat }}" class="btn btn-ghost">← 返回</a>
+</div>
+{% endblock %}

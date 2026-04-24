@@ -1,84 +1,85 @@
 {% extends "base.html" %}
 
-{% block title %}珊珊单词 · ShanshanWords{% endblock %}
+{% block title %}珊珊单词{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
 <div class="hero">
-    <div class="hero-icon">📖</div>
+    <div class="hero-badge">词库学习平台</div>
     <h1>珊珊单词</h1>
-    <p class="hero-subtitle">ShanshanWords · A smarter way to remember IELTS and GRE vocabulary</p>
+    <p class="hero-sub">ShanshanWords · 让记忆自然发生</p>
 </div>
 
-<!-- Two Learning Modes -->
-<div class="mode-section">
-    <h2 class="section-title">选择学习模式</h2>
-    <div class="mode-cards">
+<div class="belief-block">
+    <div class="belief-icon">💡</div>
+    <div class="belief-text">
+        <h2>我的方法，不是要求你一遍背熟</h2>
+        <p>通过<strong>循环、多次重复</strong>，让单词变得眼熟、熟悉、最后真正记住。</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2 class="section-title">三大词库</h2>
+    <div class="wordlib-grid">
+        <a href="/library/GRE" class="wordlib-card">
+            <div class="wordlib-icon">🎓</div>
+            <div class="wordlib-info">
+                <h3>GRE核心词汇</h3>
+                <p>GRE 考试高频词汇，攻克学术英语</p>
+                <span class="wordlib-count">{{ cat_counts.get('GRE', 0) }} 个单词</span>
+            </div>
+            <div class="wordlib-arrow">→</div>
+        </a>
+        <a href="/library/IELTS_BOOK" class="wordlib-card">
+            <div class="wordlib-icon">📖</div>
+            <div class="wordlib-info">
+                <h3>雅思词汇真经</h3>
+                <p>22 章节系统学习，深度掌握</p>
+                <span class="wordlib-count">{{ cat_counts.get('IELTS_BOOK', 0) }} 个单词</span>
+            </div>
+            <div class="wordlib-arrow">→</div>
+        </a>
+        <a href="/library/IELTS_SCENE" class="wordlib-card">
+            <div class="wordlib-icon">🎧</div>
+            <div class="wordlib-info">
+                <h3>雅思场景词汇</h3>
+                <p>听说读写四大篇章，精准场景覆盖</p>
+                <span class="wordlib-count">{{ cat_counts.get('IELTS_SCENE', 0) }} 个单词</span>
+            </div>
+            <div class="wordlib-arrow">→</div>
+        </a>
+    </div>
+</div>
+
+<div class="section">
+    <h2 class="section-title">学习模式</h2>
+    <div class="mode-grid">
         <div class="mode-card">
-            <div class="mode-icon">📚</div>
+            <div class="mode-icon">📖</div>
             <h3>普通模式</h3>
-            <p>自由浏览词库，搜索单词，标记收藏和难词</p>
-            <ul class="mode-features">
-                <li>按词库浏览所有单词</li>
-                <li>搜索单词或中文释义</li>
-                <li>收藏重要单词</li>
-                <li>标记记忆困难的单词</li>
-            </ul>
+            <p>自由浏览词库、搜索、标记收藏和难词</p>
             <a href="/library" class="btn btn-primary">开始浏览</a>
         </div>
-
-        <div class="mode-card">
+        <div class="mode-card mode-card-purple">
             <div class="mode-icon">🔄</div>
             <h3>珊珊的方法</h3>
-            <p>科学的循环记忆法，按计划每日学习</p>
-            <ul class="mode-features">
-                <li>将词库分成若干天循环学习</li>
-                <li>每天自动生成当日词单</li>
-                <li>复习之前标记的难词</li>
-                <li>提高记忆效率</li>
-            </ul>
+            <p>循环记忆法，按计划每日学习</p>
             <a href="/method" class="btn btn-purple">开始计划</a>
         </div>
     </div>
 </div>
 
-<!-- Philosophy Section -->
-<div class="philosophy-section">
-    <h2 class="section-title">核心理念</h2>
-    <div class="philosophy-cards">
-        <div class="philosophy-card">
-            <div class="philosophy-icon">🔄</div>
-            <h3>循环记忆</h3>
-            <p>基于艾宾浩斯遗忘曲线，科学安排复习时机，让记忆更持久</p>
-        </div>
-        <div class="philosophy-card">
-            <div class="philosophy-icon">⭐</div>
-            <h3>难词标记</h3>
-            <p>一键标记记忆困难的单词，重点攻克薄弱环节</p>
-        </div>
-        <div class="philosophy-card">
-            <div class="philosophy-icon">❤️</div>
-            <h3>重点复习</h3>
-            <p>收藏重要单词，方便随时回顾，强化重点词汇</p>
-        </div>
+<div class="section">
+    <div class="quick-links">
+        <a href="/favorites" class="quick-link"><span>❤️</span> 收藏夹 <small>{{ fav }} 个</small></a>
+        <a href="/hard_words" class="quick-link"><span>⭐</span> 难词本 <small>{{ hard }} 个</small></a>
     </div>
 </div>
 
-<!-- Quick Stats -->
-<div class="stats-bar">
-    <div class="stat">
-        <span class="stat-num">IELTS</span>
-        <span class="stat-label">雅思核心词汇</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat">
-        <span class="stat-num">GRE</span>
-        <span class="stat-label">高频词汇</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat">
-        <span class="stat-num">2</span>
-        <span class="stat-label">大词库</span>
+<div class="section">
+    <div class="stats-row">
+        <div class="stat-item"><span class="stat-num">{{ total }}</span><span class="stat-label">总词汇量</span></div>
+        <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">词库数量</span></div>
+        <div class="stat-item"><span class="stat-num">22+4</span><span class="stat-label">章节/篇章</span></div>
     </div>
 </div>
 {% endblock %}

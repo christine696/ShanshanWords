@@ -1,39 +1,30 @@
 {% extends "base.html" %}
-
-{% block title %}收藏夹 - ShanshanWords{% endblock %}
-
+{% block title %}收藏夹 - 珊珊单词{% endblock %}
 {% block content %}
 <div class="page-header">
     <h1>❤️ 收藏夹</h1>
     <p>共 {{ words|length }} 个收藏单词</p>
 </div>
 
+<div class="words-topbar">
+    <div class="topbar-left"><a href="/library" class="btn btn-ghost btn-sm">← 返回</a></div>
+    <div class="topbar-right">
+        <button class="btn-tgl" id="tgl-en" onclick="toggleEn()">👁 遮挡英文</button>
+        <button class="btn-tgl" id="tgl-cn" onclick="toggleCn()">👁 遮挡中文</button>
+    </div>
+</div>
+
 {% if words %}
-<div class="word-list">
+<div class="words-list" id="words-list">
     {% for word in words %}
-    <div class="word-card">
-        <div class="word-main">
-            <div class="word-header">
-                <span class="word-text">{{ word.word }}</span>
-                <span class="word-phonetic">{{ word.phonetic }}</span>
-            </div>
-            <div class="word-meta">
-                <span class="word-pos">{{ word.part_of_speech }}</span>
-                <span class="word-category">{{ word.category }}</span>
-            </div>
-            <div class="word-meaning">{{ word.meaning_cn }}</div>
-            {% if word.example_en %}
-            <div class="word-example">
-                <p class="example-en">{{ word.example_en }}</p>
-                <p class="example-cn">{{ word.example_cn }}</p>
-            </div>
-            {% endif %}
-        </div>
-        <div class="word-actions">
-            <a href="/toggle_favorite/{{ word.id }}?next={{ request.url|urlencode }}" class="action-btn active">❤️</a>
-            <a href="/toggle_hard/{{ word.id }}?next={{ request.url|urlencode }}" class="action-btn {% if word.is_hard %}active{% endif %}">
-                {{ '⭐' if word.is_hard else '☆' }}
-            </a>
+    <div class="word-row">
+        <div class="word-en">{{ word.word }}</div>
+        <div class="word-ph">{{ word.phonetic }}</div>
+        <div class="word-cn">{{ word.meaning_cn }}</div>
+        <div class="word-pos">{{ word.part_of_speech }}</div>
+        <div class="word-btns">
+            <a href="/toggle_favorite/{{ word.id }}?next={{ request.url|urlencode }}" class="fav-btn">❤️</a>
+            <a href="/toggle_hard/{{ word.id }}?next={{ request.url|urlencode }}" class="hard-btn">{{ '⭐' if word.is_hard else '☆' }}</a>
         </div>
     </div>
     {% endfor %}
@@ -41,12 +32,13 @@
 {% else %}
 <div class="empty-state">
     <p>还没有收藏任何单词</p>
-    <p class="empty-hint">在单词列表中点击 ❤️ 按钮来添加收藏</p>
     <a href="/library" class="btn btn-primary">去词库选择</a>
 </div>
 {% endif %}
 
-<div class="back-link">
-    <a href="/library" class="btn btn-ghost">← 返回词库选择</a>
-</div>
+<script>
+var enHidden=false,cnHidden=false;
+function toggleEn(){enHidden=!enHidden;document.getElementById('tgl-en').classList.toggle('active',enHidden);document.querySelectorAll('.word-en').forEach(function(el){el.style.visibility=enHidden?'hidden':'visible';});}
+function toggleCn(){cnHidden=!cnHidden;document.getElementById('tgl-cn').classList.toggle('active',cnHidden);document.querySelectorAll('.word-cn').forEach(function(el){el.style.visibility=cnHidden?'hidden':'visible';});}
+</script>
 {% endblock %}

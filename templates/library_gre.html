@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}GRE核心词汇 - 珊珊单词{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>🎓 GRE核心词汇</h1>
+    <p>共 {{ count }} 个单词</p>
+</div>
+<div class="section-block">
+    <div class="section-header">
+        <h2>全部词汇</h2>
+        <span class="section-count">{{ count }} 词</span>
+    </div>
+    <div style="text-align:center; margin-top:24px;">
+        <a href="/words?category=GRE" class="btn btn-primary btn-lg">开始学习 →</a>
+    </div>
+</div>
+<div class="back-link"><a href="/library" class="btn btn-ghost">← 返回词库</a></div>
+{% endblock %}

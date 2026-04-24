@@ -1,5 +1,9 @@
-venv/
+﻿venv/
 __pycache__/
 *.pyc
-words.db
-.env
+debug_*.json
+writing_*.json
+scene_*.json
+pdf_analysis*.json
+toc_*.json
+test_*.json

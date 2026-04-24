@@ -3,7 +3,7 @@ import os
 import sqlite3
 
 DB_NAME = "words.db"
-CSV_PATH = os.path.join("data", "words.csv")
+CSV_PATH = os.path.join("data", "words_master.csv")
 
 
 def init_db():
@@ -18,11 +18,14 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         word TEXT NOT NULL,
         category TEXT NOT NULL,
+        section TEXT,
+        subcategory TEXT,
         phonetic TEXT,
         part_of_speech TEXT,
         meaning_cn TEXT,
         example_en TEXT,
         example_cn TEXT,
+        source TEXT,
         difficulty INTEGER DEFAULT 1
     )
     """)
@@ -59,16 +62,19 @@ def init_db():
 
             cursor.execute("""
                 INSERT INTO words
-                (word, category, phonetic, part_of_speech, meaning_cn, example_en, example_cn, difficulty)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                (word, category, section, subcategory, phonetic, part_of_speech, meaning_cn, example_en, example_cn, source, difficulty)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 word,
                 category,
+                row.get("section", ""),
+                row.get("subcategory", ""),
                 row.get("phonetic", ""),
                 row.get("part_of_speech", ""),
                 row.get("meaning_cn", ""),
                 row.get("example_en", ""),
                 row.get("example_cn", ""),
+                row.get("source", ""),
                 difficulty
             ))
 

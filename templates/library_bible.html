@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}雅思词汇真经 - 珊珊单词{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>📖 雅思词汇真经</h1>
+    <p>22 章节系统学习，共 {{ count }} 个单词</p>
+</div>
+
+<div class="tabs">
+    <a href="/library/GRE" class="tab">🎓 GRE核心词汇</a>
+    <a href="/library/IELTS_BOOK" class="tab active">📖 雅思词汇真经</a>
+    <a href="/library/IELTS_SCENE" class="tab">🎧 雅思场景词汇</a>
+</div>
+
+{% if chapters %}
+<div class="section-block">
+    <div class="section-header">
+        <h2>22 个章节</h2>
+        <span class="section-count">{{ count }} 词</span>
+    </div>
+    <div class="chapter-grid">
+        {% for chapter in chapters %}
+        <a href="/words?category=IELTS_BOOK&subcategory={{ chapter }}" class="chapter-card">
+            <div class="chapter-icon">📚</div>
+            <div class="chapter-info">
+                <h3>{{ chapter }}</h3>
+            </div>
+            <div class="chapter-arrow">→</div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <p>章节数据加载中，请稍后刷新</p>
+</div>
+{% endif %}
+
+<div class="back-link"><a href="/library" class="btn btn-ghost">← 返回词库</a></div>
+{% endblock %}
